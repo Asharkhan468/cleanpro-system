@@ -77,35 +77,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
           </div>
         </div>
 
-        {/* Performance Metrics */}
-        {/* <div className="space-y-3 mb-4">
-          <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-gray-600">Popularity</span>
-              <span className="font-medium text-gray-900">{service.popularity}%</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full"
-                style={{ width: `${service.popularity}%` }}
-              ></div>
-            </div>
-          </div>
-          
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-600">
-              <FontAwesomeIcon icon={faUsers} className="w-3 h-3 mr-1" />
-              Bookings
-            </span>
-            <span className="font-medium text-gray-900">{service.bookings}</span>
-          </div>
-          
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Revenue</span>
-            <span className="font-medium text-gray-900">{service.revenue}</span>
-          </div>
-        </div> */}
-
+     
         {/* Action Buttons */}
         <div className="flex items-center justify-end space-x-2 pt-4 border-t border-gray-100">
           <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="View Details">

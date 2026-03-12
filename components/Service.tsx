@@ -99,7 +99,7 @@ export default function Services() {
   ];
 
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section id="services" className="py-24 bg-white relative overflow-hidden">
       {/* Background Decoration */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-50 via-white to-white"></div>
 

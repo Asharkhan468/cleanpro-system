@@ -93,7 +93,7 @@ export default function Process() {
   ];
 
   return (
-    <section ref={sectionRef} className="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+    <section id='process' ref={sectionRef} className="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
       {/* Decorative Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-white to-transparent"></div>

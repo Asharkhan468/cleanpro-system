@@ -1,6 +1,7 @@
 // app/admin/layout.tsx
 "use client"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import Sidebar from '@/components/admin/SideBar';
 import Header from '@/components/admin/Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,7 +13,21 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const pathname = usePathname();
+  
+  // Check if current route is login page
+  const isLoginPage = pathname === '/admin/login';
 
+  // If it's login page, render without sidebar and header
+  if (isLoginPage) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        {children}
+      </div>
+    );
+  }
+
+  // For all other admin pages, render with sidebar and header
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Sidebar */}

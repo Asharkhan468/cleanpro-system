@@ -89,7 +89,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+    <section id='testimonials' className="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-20 w-40 h-40 bg-blue-500 rounded-full"></div>
