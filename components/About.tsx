@@ -165,14 +165,7 @@ export default function About() {
                   </div>
                   <h4 className="font-bold text-gray-900 text-lg">{member.name}</h4>
                   <p className="text-gray-600 text-sm mb-3">{member.role}</p>
-                  <div className="flex justify-center gap-2">
-                    <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors cursor-pointer">
-                      <span className="text-xs">in</span>
-                    </div>
-                    <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors cursor-pointer">
-                      <span className="text-xs">tw</span>
-                    </div>
-                  </div>
+                  
                 </div>
               </div>
             ))}

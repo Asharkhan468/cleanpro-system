@@ -1,39 +1,46 @@
-import { connectDB } from "@/lib/db";
-import User from "@/models/User";
-import bcrypt from "bcryptjs";
-import { generateToken } from "@/lib/auth";
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import { generateToken } from "@/libs/jwt";
 
 export async function POST(req) {
   try {
-    await connectDB();
-
     const { email, password } = await req.json();
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      return NextResponse.json(
-        { message: "Invalid credentials" },
-        { status: 400 }
-      );
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (email !== adminEmail) {
+      return NextResponse.json({ message: "Invalid email" }, { status: 401 });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, adminPassword);
+
+    console.log("Entered:", password);
+    console.log("Hash:", adminPassword);
+    console.log("Match:", isMatch);
+
     if (!isMatch) {
       return NextResponse.json(
-        { message: "Invalid credentials" },
-        { status: 400 }
+        { message: "Invalid password" },
+        { status: 401 },
       );
     }
 
-    const token = generateToken(user);
+    const token = generateToken({ email });
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       message: "Login successful",
-      token,
     });
 
+    response.cookies.set("adminToken", token, {
+      httpOnly: true,
+      secure: true,
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    return response;
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }

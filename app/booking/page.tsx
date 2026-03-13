@@ -273,7 +273,7 @@ export default function BookingPage() {
       setFormStep(formStep + 1);
       window.scrollTo(0, 0);
     } else {
-      alert("Please fill in all required fields");
+      toast.info("Please fill in all required fields");
     }
   };
 
@@ -435,10 +435,10 @@ export default function BookingPage() {
               <select
                 value={serviceDetails.id}
                 onChange={handlePackageSelect}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full text-gray-500 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 {packages.map((pkg) => (
-                  <option key={pkg.id} value={pkg.id}>
+                  <option className="text-gray-600" key={pkg.id} value={pkg.id}>
                     {pkg.name} - {pkg.price}
                   </option>
                 ))}
@@ -536,7 +536,7 @@ export default function BookingPage() {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border text-gray-500 placeholder:text-gray-500 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="John"
                     required
                   />
@@ -555,7 +555,7 @@ export default function BookingPage() {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 text-gray-500 placeholder:text-gray-500 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Doe"
                     required
                   />
@@ -574,7 +574,7 @@ export default function BookingPage() {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border text-gray-500 placeholder:text-gray-500 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="john.doe@example.com"
                     required
                   />
@@ -593,7 +593,7 @@ export default function BookingPage() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border text-gray-500 placeholder:text-gray-500 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="(555) 123-4567"
                     required
                   />
@@ -612,7 +612,7 @@ export default function BookingPage() {
                     name="alternatePhone"
                     value={formData.alternatePhone}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border text-gray-500 placeholder:text-gray-500 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="(555) 987-6543"
                   />
                 </div>
@@ -641,7 +641,7 @@ export default function BookingPage() {
                     name="streetAddress"
                     value={formData.streetAddress}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border text-gray-500 placeholder:text-gray-500 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="123 Main Street"
                     required
                   />
@@ -656,7 +656,7 @@ export default function BookingPage() {
                     name="apartment"
                     value={formData.apartment}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border text-gray-500 placeholder:text-gray-500 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Apt 4B"
                   />
                 </div>
@@ -671,7 +671,7 @@ export default function BookingPage() {
                       name="city"
                       value={formData.city}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-3 text-gray-500 placeholder:text-gray-500 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Los Angeles"
                       required
                     />
@@ -685,7 +685,7 @@ export default function BookingPage() {
                       name="state"
                       value={formData.state}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 text-gray-500 placeholder:text-gray-500 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       required
                     >
                       <option value="">Select State</option>
@@ -706,7 +706,7 @@ export default function BookingPage() {
                       name="zipCode"
                       value={formData.zipCode}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full text-gray-500 placeholder:text-gray-500 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="90210"
                       required
                     />
@@ -738,7 +738,7 @@ export default function BookingPage() {
                     value={formData.serviceDate}
                     onChange={handleInputChange}
                     min={new Date().toISOString().split("T")[0]}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full text-gray-500 placeholder:text-gray-500 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
                 </div>
@@ -755,7 +755,7 @@ export default function BookingPage() {
                     name="serviceTime"
                     value={formData.serviceTime}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full text-gray-500 placeholder:text-gray-500 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
                   >
                     <option value="">Select Time</option>
@@ -779,7 +779,7 @@ export default function BookingPage() {
                     name="numberOfRooms"
                     value={formData.numberOfRooms}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 text-gray-500 placeholder:text-gray-500 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="e.g., 3"
                   />
                 </div>
@@ -793,7 +793,7 @@ export default function BookingPage() {
                     name="squareFootage"
                     value={formData.squareFootage}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full text-gray-500 placeholder:text-gray-500 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="e.g., 1500 sq ft"
                   />
                 </div>
@@ -812,7 +812,7 @@ export default function BookingPage() {
                   value={formData.specialRequests}
                   onChange={handleInputChange}
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full text-gray-500 placeholder:text-gray-500 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Any specific requirements or instructions..."
                 />
               </div>
@@ -841,7 +841,7 @@ export default function BookingPage() {
                       name="petDetails"
                       value={formData.petDetails}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full text-gray-500 placeholder:text-gray-500 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Type and number of pets"
                     />
                   </div>
@@ -856,7 +856,7 @@ export default function BookingPage() {
                     name="accessInstructions"
                     value={formData.accessInstructions}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border text-gray-500 placeholder:text-gray-500 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Gate codes, parking instructions, etc."
                   />
                 </div>
