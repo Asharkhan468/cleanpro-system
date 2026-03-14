@@ -1,39 +1,19 @@
 import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
+import { parse } from "cookie";
 
 export function middleware(req) {
-  const token = req.headers.get("authorization")?.split(" ")[1];
+  const cookieHeader = req.headers.get("adminToken") || "";
+  const cookies = parse(cookieHeader);
+
+  const token = cookies.token;
 
   if (!token) {
-    return NextResponse.json(
-      { message: "Access Denied" },
-      { status: 401 }
-    );
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    // Admin Route Protection
-    if (req.nextUrl.pathname.startsWith("/api/admin")) {
-      if (decoded.role !== "admin") {
-        return NextResponse.json(
-          { message: "Admin Access Only" },
-          { status: 403 }
-        );
-      }
-    }
-
-    return NextResponse.next();
-
-  } catch (error) {
-    return NextResponse.json(
-      { message: "Invalid Token" },
-      { status: 401 }
-    );
-  }
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/api/admin/:path*", "/api/user/:path*"],
+  matcher: ["/"],
 };

@@ -2,8 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const AdminLogin = () => {
   const router = useRouter();
@@ -50,11 +49,7 @@ const AdminLogin = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen w-full bg-white">
-      <ToastContainer />
-
-      {/* Inner Container - Flex row on desktop, column on mobile */}
       <div className="flex flex-col md:flex-row w-full min-h-screen">
-        {/* Welcome/Image Section - Hidden on mobile, visible on md and up */}
         <div className="hidden md:flex md:w-1/2 bg-black items-center justify-center relative">
           <div className="relative w-full h-full">
             <Image
@@ -111,22 +106,7 @@ const AdminLogin = () => {
                   className="w-full px-4 py-3 text-gray-500 placeholder:text-gray-500 rounded-lg border border-gray-300 font-poppins text-base md:text-lg outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 transition-colors bg-white"
                 />
 
-                {/* Remember Me Checkbox */}
-                <div className="flex items-center gap-2 pt-2">
-                  <input
-                    type="checkbox"
-                    id="remember"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 accent-teal-600 cursor-pointer"
-                  />
-                  <label
-                    htmlFor="remember"
-                    className="text-base md:text-lg font-poppins text-gray-700 cursor-pointer"
-                  >
-                    Remember me
-                  </label>
-                </div>
+               
               </div>
 
               {/* Login Button */}

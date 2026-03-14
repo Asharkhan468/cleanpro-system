@@ -1,32 +1,31 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import Admin from "@/models/Admin";
+import { connectDB } from "@/libs/db";
 import { generateToken } from "@/libs/jwt";
 
 export async function POST(req) {
   try {
+    await connectDB();
+
     const { email, password } = await req.json();
 
-    const adminEmail = process.env.ADMIN_EMAIL;
-    const adminPassword = process.env.ADMIN_PASSWORD;
+    const admin = await Admin.findOne({ email });
 
-    if (email !== adminEmail) {
+    if (!admin) {
       return NextResponse.json({ message: "Invalid email" }, { status: 401 });
     }
 
-    const isMatch = await bcrypt.compare(password, adminPassword);
-
-    console.log("Entered:", password);
-    console.log("Hash:", adminPassword);
-    console.log("Match:", isMatch);
+    const isMatch = await bcrypt.compare(password, admin.password);
 
     if (!isMatch) {
       return NextResponse.json(
         { message: "Invalid password" },
-        { status: 401 },
+        { status: 401 }
       );
     }
 
-    const token = generateToken({ email });
+    const token = generateToken({ email: admin.email });
 
     const response = NextResponse.json({
       message: "Login successful",
