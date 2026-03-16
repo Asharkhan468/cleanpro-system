@@ -1,5 +1,4 @@
-// components/admin/BookingModal.tsx
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTimes,
   faUser,
@@ -9,8 +8,8 @@ import {
   faPhone,
   faEnvelope,
   faDollarSign,
-  faTag
-} from '@fortawesome/free-solid-svg-icons';
+  faTag,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface BookingModalProps {
   booking: {
@@ -25,7 +24,7 @@ interface BookingModalProps {
   onClose: () => void;
 }
 
-const BookingModal = ({ booking, onClose }: BookingModalProps) => {
+const BookingModal = ({ booking, onClose }: any) => {
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Backdrop */}
@@ -40,14 +39,21 @@ const BookingModal = ({ booking, onClose }: BookingModalProps) => {
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-100">
             <div>
-              <h3 className="text-xl font-semibold text-gray-900">Booking Details</h3>
-              <p className="text-sm text-gray-600 mt-1">ID: {booking.id}</p>
+              <h3 className="text-xl font-semibold text-gray-900">
+                Booking Details
+              </h3>
+              <p className="text-sm text-gray-600 mt-1">
+                ID: {booking?.bookingId}
+              </p>
             </div>
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              <FontAwesomeIcon icon={faTimes} className="w-5 h-5 text-gray-500" />
+              <FontAwesomeIcon
+                icon={faTimes}
+                className="w-5 h-5 text-gray-500"
+              />
             </button>
           </div>
 
@@ -57,21 +63,30 @@ const BookingModal = ({ booking, onClose }: BookingModalProps) => {
               {/* Customer Info */}
               <div className="space-y-4">
                 <h4 className="font-semibold text-gray-900 flex items-center">
-                  <FontAwesomeIcon icon={faUser} className="w-4 h-4 mr-2 text-blue-600" />
+                  <FontAwesomeIcon
+                    icon={faUser}
+                    className="w-4 h-4 mr-2 text-blue-600"
+                  />
                   Customer Information
                 </h4>
                 <div className="bg-gray-50 rounded-xl p-4 space-y-3">
                   <p className="text-sm">
-                    <span className="text-gray-600">Name:</span>{' '}
-                    <span className="font-medium text-gray-900">{booking.customer}</span>
+                    <span className="text-gray-600">Name:</span>{" "}
+                    <span className="font-medium text-gray-900">
+                      {booking?.firstName}
+                    </span>
                   </p>
                   <p className="text-sm">
-                    <span className="text-gray-600">Email:</span>{' '}
-                    <span className="font-medium text-gray-900">john.doe@email.com</span>
+                    <span className="text-gray-600">Email:</span>{" "}
+                    <span className="font-medium text-gray-900">
+                      {booking?.email}
+                    </span>
                   </p>
                   <p className="text-sm">
-                    <span className="text-gray-600">Phone:</span>{' '}
-                    <span className="font-medium text-gray-900">(555) 123-4567</span>
+                    <span className="text-gray-600">Phone:</span>{" "}
+                    <span className="font-medium text-gray-900">
+                      {booking?.alternatePhone}
+                    </span>
                   </p>
                 </div>
               </div>
@@ -79,27 +94,40 @@ const BookingModal = ({ booking, onClose }: BookingModalProps) => {
               {/* Service Info */}
               <div className="space-y-4">
                 <h4 className="font-semibold text-gray-900 flex items-center">
-                  <FontAwesomeIcon icon={faTag} className="w-4 h-4 mr-2 text-blue-600" />
+                  <FontAwesomeIcon
+                    icon={faTag}
+                    className="w-4 h-4 mr-2 text-blue-600"
+                  />
                   Service Information
                 </h4>
                 <div className="bg-gray-50 rounded-xl p-4 space-y-3">
                   <p className="text-sm">
-                    <span className="text-gray-600">Service:</span>{' '}
-                    <span className="font-medium text-gray-900">{booking.service}</span>
+                    <span className="text-gray-600">Service:</span>{" "}
+                    <span className="font-medium text-gray-900">
+                      {booking?.service.name}
+                    </span>
                   </p>
                   <p className="text-sm">
-                    <span className="text-gray-600">Amount:</span>{' '}
-                    <span className="font-medium text-gray-900">{booking.amount}</span>
+                    <span className="text-gray-600">Amount:</span>{" "}
+                    <span className="font-medium text-gray-900">
+                      {booking?.service?.price}
+                    </span>
                   </p>
                   <p className="text-sm">
-                    <span className="text-gray-600">Status:</span>{' '}
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
-                      booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                      booking.status === 'completed' ? 'bg-blue-100 text-blue-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
-                      {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                    <span className="text-gray-600">Status:</span>{" "}
+                    <span
+                      className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        booking.status === "confirmed"
+                          ? "bg-green-100 text-green-800"
+                          : booking?.status === "pending"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : booking?.status === "completed"
+                              ? "bg-blue-100 text-blue-800"
+                              : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {booking?.status.charAt(0).toUpperCase() +
+                        booking?.status.slice(1)}
                     </span>
                   </p>
                 </div>
@@ -108,21 +136,30 @@ const BookingModal = ({ booking, onClose }: BookingModalProps) => {
               {/* Schedule */}
               <div className="space-y-4">
                 <h4 className="font-semibold text-gray-900 flex items-center">
-                  <FontAwesomeIcon icon={faCalendar} className="w-4 h-4 mr-2 text-blue-600" />
+                  <FontAwesomeIcon
+                    icon={faCalendar}
+                    className="w-4 h-4 mr-2 text-blue-600"
+                  />
                   Schedule
                 </h4>
                 <div className="bg-gray-50 rounded-xl p-4 space-y-3">
                   <p className="text-sm">
-                    <span className="text-gray-600">Date:</span>{' '}
-                    <span className="font-medium text-gray-900">{booking.date}</span>
+                    <span className="text-gray-600">Date:</span>{" "}
+                    <span className="font-medium text-gray-900">
+                      {booking?.serviceDate}
+                    </span>
                   </p>
                   <p className="text-sm">
-                    <span className="text-gray-600">Time:</span>{' '}
-                    <span className="font-medium text-gray-900">{booking.time}</span>
+                    <span className="text-gray-600">Time:</span>{" "}
+                    <span className="font-medium text-gray-900">
+                      {booking?.serviceTime}
+                    </span>
                   </p>
                   <p className="text-sm">
-                    <span className="text-gray-600">Duration:</span>{' '}
-                    <span className="font-medium text-gray-900">2-3 hours</span>
+                    <span className="text-gray-600">Duration:</span>{" "}
+                    <span className="font-medium text-gray-900">
+                      {booking?.serviceDuration}
+                    </span>
                   </p>
                 </div>
               </div>
@@ -130,14 +167,19 @@ const BookingModal = ({ booking, onClose }: BookingModalProps) => {
               {/* Location */}
               <div className="space-y-4">
                 <h4 className="font-semibold text-gray-900 flex items-center">
-                  <FontAwesomeIcon icon={faMapMarker} className="w-4 h-4 mr-2 text-blue-600" />
+                  <FontAwesomeIcon
+                    icon={faMapMarker}
+                    className="w-4 h-4 mr-2 text-blue-600"
+                  />
                   Service Address
                 </h4>
                 <div className="bg-gray-50 rounded-xl p-4">
                   <p className="text-sm text-gray-900">
-                    123 Main Street<br />
-                    Apt 4B<br />
-                    Los Angeles, CA 90210
+                    {booking?.streetAddress}
+                    <br />
+                    {booking?.city}
+                    <br />
+                    {booking?.country}
                   </p>
                 </div>
               </div>
@@ -145,10 +187,13 @@ const BookingModal = ({ booking, onClose }: BookingModalProps) => {
 
             {/* Additional Notes */}
             <div className="mt-6">
-              <h4 className="font-semibold text-gray-900 mb-3">Additional Notes</h4>
+              <h4 className="font-semibold text-gray-900 mb-3">
+                Additional Notes
+              </h4>
               <div className="bg-gray-50 rounded-xl p-4">
                 <p className="text-sm text-gray-600">
-                  Customer has two dogs. Please bring pet-safe cleaning products. Gate code: 1234.
+                  Customer has two dogs. Please bring pet-safe cleaning
+                  products. Gate code: 1234.
                 </p>
               </div>
             </div>
@@ -161,9 +206,6 @@ const BookingModal = ({ booking, onClose }: BookingModalProps) => {
               className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
             >
               Close
-            </button>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
-              Update Status
             </button>
           </div>
         </div>

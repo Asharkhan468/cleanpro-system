@@ -1,4 +1,3 @@
-// app/admin/page.tsx
 "use client"
 import { useState } from 'react';
 import StatsCard from '@/components/admin/StatsCard';

@@ -1,19 +1,15 @@
 import { NextResponse } from "next/server";
-import { parse } from "cookie";
 
 export function middleware(req) {
-  const cookieHeader = req.headers.get("adminToken") || "";
-  const cookies = parse(cookieHeader);
-
-  const token = cookies.token;
+  const token = req.cookies.get("adminToken")?.value;
 
   if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/admin/login", req.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/"],
+  matcher: ["/admin/:path*"],
 };

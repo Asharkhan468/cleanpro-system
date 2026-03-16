@@ -5,7 +5,17 @@ const bookingSchema = new mongoose.Schema(
     service: {
       id: String,
       name: String,
-      price: String
+      price: String,
+    },
+
+    bookingId: {
+      type: String,
+      unique: true,
+    },
+
+    status: {
+      type: String,
+      default: "Pending",
     },
 
     firstName: String,
@@ -32,9 +42,9 @@ const bookingSchema = new mongoose.Schema(
     petDetails: String,
     accessInstructions: String,
 
-    paymentMethod: String
+    paymentMethod: String,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.models.Booking ||

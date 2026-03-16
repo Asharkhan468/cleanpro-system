@@ -42,7 +42,7 @@ const Header = ({ sidebarOpen, setSidebarOpen }: HeaderProps) => {
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full text-gray-500 placeholder:text-gray-500 pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
                 <FontAwesomeIcon
                   icon={faSearch}
