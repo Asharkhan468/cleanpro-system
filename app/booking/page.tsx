@@ -8,7 +8,6 @@ import {
   faEnvelope,
   faPhone,
   faCalendar,
-  faMapMarker,
   faComment,
   faMoneyBill,
   faCheckCircle,
@@ -20,12 +19,8 @@ import {
   faSnowflake,
   faShield,
   faClock,
-  faCity,
-  faMailBulk,
-  faFlag,
   faLocationDot,
   faMobile,
-  faUserCircle,
   faBox,
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
@@ -72,59 +67,37 @@ interface FormData {
 }
 
 // Define packages data with proper typing
-const packages: Package[] = [
-  {
-    id: "1",
-    name: "Deep Cleaning Service",
-    price: "$199",
-    icon: faHome,
-    description: "Complete home deep cleaning",
-  },
-  {
-    id: "2",
-    name: "Office Cleaning",
-    price: "$299",
-    icon: faBuilding,
-    description: "Professional office space cleaning",
-  },
-  {
-    id: "3",
-    name: "Car Wash & Detailing",
-    price: "$79",
-    icon: faCar,
-    description: "Complete car cleaning and detailing",
-  },
-  {
-    id: "4",
-    name: "Carpet Cleaning",
-    price: "$149",
-    icon: faWind,
-    description: "Deep carpet steam cleaning",
-  },
-  {
-    id: "5",
-    name: "AC Servicing",
-    price: "$89",
-    icon: faSnowflake,
-    description: "AC maintenance and repair",
-  },
-  {
-    id: "6",
-    name: "Security System Setup",
-    price: "$399",
-    icon: faShield,
-    description: "Complete security installation",
-  },
-];
 
 export default function BookingPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [formStep, setFormStep] = useState<number>(1);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [packages, setPackagesData] = useState<any>([]);
   const [bookingComplete, setBookingComplete] = useState<boolean>(false);
   const [showPackageDropdown, setShowPackageDropdown] =
     useState<boolean>(false);
+
+  const getServices = async () => {
+    try {
+      const res = await fetch("/api/service");
+
+      const data = await res.json();
+      setPackagesData(data.data);
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to fetch services");
+      }
+
+      return data.data;
+    } catch (error) {
+      console.error("Get Services Error:", (error as any).message);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    getServices();
+  }, []);
 
   // Get service details from URL params
   const [serviceDetails, setServiceDetails] = useState<ServiceDetails>({
@@ -168,10 +141,8 @@ export default function BookingPage() {
     paymentMethod: "cash",
     agreeToTerms: false,
   });
-
-  // Set service details from URL params or show package dropdown
   useEffect(() => {
-    const id = searchParams.get("id");
+    const id = searchParams.get("_id");
     const name = searchParams.get("name");
     const price = searchParams.get("price");
 
@@ -184,19 +155,18 @@ export default function BookingPage() {
       });
       setShowPackageDropdown(false);
     } else {
-      // No service data from URL, show package dropdown
       setShowPackageDropdown(true);
-      // Set default service if packages exist
+
       if (packages.length > 0) {
         setServiceDetails({
-          id: packages[0].id,
+          id: packages[0]._id,
           name: packages[0].name,
           price: packages[0].price,
-          icon: packages[0].icon,
+          icon: getServiceIcon(packages[0]._id),
         });
       }
     }
-  }, [searchParams]);
+  }, [searchParams, packages]);
 
   // Get appropriate icon based on service ID
   const getServiceIcon = (id: string): IconDefinition => {
@@ -214,14 +184,14 @@ export default function BookingPage() {
   // Handle package selection
   const handlePackageSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedId = e.target.value;
-    const selectedPackage = packages.find((p) => p.id === selectedId);
+    const selectedPackage = packages.find((p: any) => p._id === selectedId);
 
     if (selectedPackage) {
       setServiceDetails({
-        id: selectedPackage.id,
+        id: selectedPackage._id,
         name: selectedPackage.name,
         price: selectedPackage.price,
-        icon: selectedPackage.icon,
+        icon: getServiceIcon(selectedPackage._id),
       });
     }
   };
@@ -283,49 +253,45 @@ export default function BookingPage() {
     window.scrollTo(0, 0);
   };
 
-  const handleSubmit = async (e:any) => {
-  e.preventDefault();
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
 
-  if (!formData.agreeToTerms) {
-    toast.error("Please agree to the terms and conditions");
-    return;
-  }
-
-  setIsSubmitting(true);
-
-  try {
-
-    const res = await fetch("/api/booking", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        service: serviceDetails,
-        ...formData
-      })
-    });
-
-    const data = await res.json();
-
-    if (!data.success) {
-      toast.error(data.message);
-      setIsSubmitting(false);
+    if (!formData.agreeToTerms) {
+      toast.error("Please agree to the terms and conditions");
       return;
     }
 
-    toast.success("Booking completed successfully 🎉");
+    setIsSubmitting(true);
 
-    setBookingComplete(true);
+    try {
+      const res = await fetch("/api/booking", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          service: serviceDetails,
+          ...formData,
+        }),
+      });
 
-  } catch (error) {
+      const data = await res.json();
 
-    toast.error("Something went wrong");
+      if (!data.success) {
+        toast.error(data.message);
+        setIsSubmitting(false);
+        return;
+      }
 
-  }
+      toast.success("Booking completed successfully 🎉");
 
-  setIsSubmitting(false);
-};
+      setBookingComplete(true);
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+
+    setIsSubmitting(false);
+  };
   // If no service selected and no packages to show
   if (!serviceDetails.name && !bookingComplete && packages.length === 0) {
     return (
@@ -433,18 +399,25 @@ export default function BookingPage() {
                 Choose from available packages
               </label>
               <select
-                value={serviceDetails.id}
+                value={serviceDetails.id || ""}
                 onChange={handlePackageSelect}
                 className="w-full text-gray-500 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
-                {packages.map((pkg) => (
-                  <option className="text-gray-600" key={pkg.id} value={pkg.id}>
-                    {pkg.name} - {pkg.price}
+                {packages.map((pkg: any) => (
+                  <option
+                    className="text-gray-600"
+                    key={pkg._id}
+                    value={pkg._id}
+                  >
+                    {pkg.name} - {pkg.price} $
                   </option>
                 ))}
               </select>
               <p className="text-sm text-gray-500 mt-2">
-                {packages.find((p) => p.id === serviceDetails.id)?.description}
+                {
+                  packages.find((p: any) => p._id === serviceDetails.id)
+                    ?.description
+                }
               </p>
             </div>
           </div>
