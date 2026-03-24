@@ -7,17 +7,17 @@ import {
   faWind,
   faSnowflake,
   faShield,
-  faClock,
-  faLeaf,
   faArrowRight,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Services() {
   const [hoveredCard, setHoveredCard] = useState(null);
   const router = useRouter();
+
+ 
 
   const services = [
     {

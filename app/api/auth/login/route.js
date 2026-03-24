@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import Admin from "@/models/Admin";
-import { connectDB } from "@/libs/db";
+import { dbConnect } from "@/libs/db";
 import { generateToken } from "@/libs/jwt";
 
 export async function POST(req) {
   try {
-    await connectDB();
+    await dbConnect();
 
     const { email, password } = await req.json();
 
@@ -21,7 +21,7 @@ export async function POST(req) {
     if (!isMatch) {
       return NextResponse.json(
         { message: "Invalid password" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 

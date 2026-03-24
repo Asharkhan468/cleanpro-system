@@ -1,14 +1,10 @@
 // app/admin/services/page.tsx
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
-  faBuilding,
-  faCar,
-  faWind,
-  faSnowflake,
-  faShield,
+ 
   faEdit,
   faTrash,
   faPlus,
@@ -43,90 +39,16 @@ export default function ServicesPage() {
   const [filterCategory, setFilterCategory] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showModal, setShowModal] = useState(false);
+  const [services , setServices]=useState([]);
+  const [stats, setStats] = useState<any>({});
 
-  // Sample services data
-  const services: Service[] = [
-    {
-      id: "1",
-      name: "Deep Cleaning Service",
-      description:
-        "Complete home deep cleaning including all rooms, kitchen, and bathrooms",
-      price: "$199",
-      duration: "3-4 hours",
-      icon: faHome,
-      category: "residential",
-      popularity: 95,
-      bookings: 450,
-      revenue: "$89,550",
-      status: "active",
-    },
-    {
-      id: "2",
-      name: "Office Cleaning",
-      description:
-        "Professional office space cleaning for workspaces and common areas",
-      price: "$299",
-      duration: "4-5 hours",
-      icon: faBuilding,
-      category: "commercial",
-      popularity: 88,
-      bookings: 320,
-      revenue: "$95,680",
-      status: "active",
-    },
-    {
-      id: "3",
-      name: "Car Wash & Detailing",
-      description: "Complete car cleaning, waxing, and interior detailing",
-      price: "$79",
-      duration: "1-2 hours",
-      icon: faCar,
-      category: "automotive",
-      popularity: 92,
-      bookings: 580,
-      revenue: "$45,820",
-      status: "active",
-    },
-    {
-      id: "4",
-      name: "Carpet Cleaning",
-      description: "Deep carpet steam cleaning and stain removal",
-      price: "$149",
-      duration: "2-3 hours",
-      icon: faWind,
-      category: "residential",
-      popularity: 85,
-      bookings: 280,
-      revenue: "$41,720",
-      status: "active",
-    },
-    {
-      id: "5",
-      name: "AC Servicing",
-      description: "AC maintenance, filter cleaning, and performance check",
-      price: "$89",
-      duration: "1-2 hours",
-      icon: faSnowflake,
-      category: "maintenance",
-      popularity: 78,
-      bookings: 190,
-      revenue: "$16,910",
-      status: "inactive",
-    },
-    {
-      id: "6",
-      name: "Security System Setup",
-      description: "Complete security installation with cameras and sensors",
-      price: "$399",
-      duration: "3-4 hours",
-      icon: faShield,
-      category: "security",
-      popularity: 72,
-      bookings: 120,
-      revenue: "$47,880",
-      status: "active",
-    },
-  ];
+
+  const getStats = async () => {
+  const res = await fetch("/api/stats");
+  const data = await res.json();
+  setStats(data.data);
+};
+
 
   const categories = [
     { value: "all", label: "All Categories" },
@@ -137,7 +59,31 @@ export default function ServicesPage() {
     { value: "security", label: "Security" },
   ];
 
-  const filteredServices = services.filter((service) => {
+  
+  const getServices = async () => {
+      try {
+        const res = await fetch("/api/service");
+  
+        const data = await res.json();
+        console.log(data.data)
+        setServices(data.data);
+        if (!res.ok) {
+          throw new Error(data.message || "Failed to fetch services");
+        }
+  
+        return data.data;
+      } catch (error) {
+        console.error("Get Services Error:", (error as any).message);
+        return [];
+      }
+    };
+  
+    useEffect(()=>{
+      getServices()
+      getStats()
+    },[])
+
+  const filteredServices = services.filter((service:any) => {
     const matchesSearch =
       service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       service.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -147,13 +93,13 @@ export default function ServicesPage() {
   });
 
   // Stats
-  const totalServices = services.length;
-  const activeServices = services.filter((s) => s.status === "active").length;
-  const totalBookings = services.reduce((acc, s) => acc + s.bookings, 0);
-  const totalRevenue = services.reduce(
-    (acc, s) => acc + parseInt(s.revenue.replace(/[^0-9]/g, "")),
-    0,
-  );
+  const totalServices = services?.length;
+  const activeServices = services?.filter((s:any) => s.status === "active").length;
+  const totalBookings = stats.totalBookings;
+  const totalRevenue = stats.totalRevenue?.toLocaleString()
+
+  console.log(stats)
+  
 
   const handleAddService = async (service: any) => {
     try {
@@ -170,6 +116,7 @@ export default function ServicesPage() {
       toast.error("Something went wrong!");
     }
   };
+
 
   return (
     <div className="space-y-6">
@@ -245,7 +192,7 @@ export default function ServicesPage() {
             <div>
               <p className="text-sm text-gray-600">Total Revenue</p>
               <p className="text-2xl font-bold text-gray-900">
-                ${totalRevenue.toLocaleString()}
+                ${totalRevenue}
               </p>
             </div>
             <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
@@ -360,8 +307,8 @@ export default function ServicesPage() {
       {/* Services Grid/List */}
       {viewMode === "grid" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredServices.map((service) => (
-            <ServiceCard key={service.id} service={service} />
+          {filteredServices.map((service:any) => (
+            <ServiceCard key={service._id} service={service} />
           ))}
         </div>
       ) : (
@@ -397,9 +344,9 @@ export default function ServicesPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {filteredServices.map((service) => (
+                {filteredServices?.map((service:any) => (
                   <tr
-                    key={service.id}
+                    key={service._id}
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-6 py-4">
