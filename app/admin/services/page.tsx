@@ -1,10 +1,8 @@
-// app/admin/services/page.tsx
 "use client";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
- 
   faEdit,
   faTrash,
   faPlus,
@@ -14,6 +12,10 @@ import {
   faUsers,
   faCalendarCheck,
   faDollarSign,
+  faBuilding,
+  faCar,
+  faTools,
+  faShieldAlt,
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
 import ServiceCard from "@/components/admin/ServiceCard";
@@ -39,16 +41,29 @@ export default function ServicesPage() {
   const [filterCategory, setFilterCategory] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showModal, setShowModal] = useState(false);
-  const [services , setServices]=useState([]);
+  const [services, setServices] = useState([]);
   const [stats, setStats] = useState<any>({});
+  const [editData, setEditData] = useState<any | null>(null);
 
+  const categoryIcons: any = {
+    residential: faHome,
+    commercial: faBuilding,
+    automotive: faCar,
+    maintenance: faTools,
+    security: faShieldAlt,
+  };
+
+  const openEditModal = (service: any) => {
+    setEditData(service);
+    setShowModal(true);
+    console.log(service);
+  };
 
   const getStats = async () => {
-  const res = await fetch("/api/stats");
-  const data = await res.json();
-  setStats(data.data);
-};
-
+    const res = await fetch("/api/stats");
+    const data = await res.json();
+    setStats(data.data);
+  };
 
   const categories = [
     { value: "all", label: "All Categories" },
@@ -59,31 +74,30 @@ export default function ServicesPage() {
     { value: "security", label: "Security" },
   ];
 
-  
   const getServices = async () => {
-      try {
-        const res = await fetch("/api/service");
-  
-        const data = await res.json();
-        console.log(data.data)
-        setServices(data.data);
-        if (!res.ok) {
-          throw new Error(data.message || "Failed to fetch services");
-        }
-  
-        return data.data;
-      } catch (error) {
-        console.error("Get Services Error:", (error as any).message);
-        return [];
-      }
-    };
-  
-    useEffect(()=>{
-      getServices()
-      getStats()
-    },[])
+    try {
+      const res = await fetch("/api/service");
 
-  const filteredServices = services.filter((service:any) => {
+      const data = await res.json();
+      console.log(data.data);
+      setServices(data.data);
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to fetch services");
+      }
+
+      return data.data;
+    } catch (error) {
+      console.error("Get Services Error:", (error as any).message);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    getServices();
+    getStats();
+  }, []);
+
+  const filteredServices = services.filter((service: any) => {
     const matchesSearch =
       service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       service.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -94,12 +108,13 @@ export default function ServicesPage() {
 
   // Stats
   const totalServices = services?.length;
-  const activeServices = services?.filter((s:any) => s.status === "active").length;
-  const totalBookings = stats.totalBookings;
-  const totalRevenue = stats.totalRevenue?.toLocaleString()
+  const activeServices = services?.filter(
+    (s: any) => s.status === "active",
+  ).length;
+  const totalBookings = stats?.totalBookings;
+  const totalRevenue = stats?.totalRevenue?.toLocaleString();
 
-  console.log(stats)
-  
+  //Add Service
 
   const handleAddService = async (service: any) => {
     try {
@@ -109,18 +124,67 @@ export default function ServicesPage() {
         body: JSON.stringify(service),
       });
       const data = await res.json();
-      if (data.success) toast.success("Service added successfully!");
-      else toast.info(data.message);
+      if (data.success) {
+        toast.success("Service added successfully!");
+        getServices();
+      } else {
+        toast.info(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong!");
+    }
+  };
+//Edit service
+  const handleEditService = async (service: any) => {
+    try {
+      const res = await fetch("/api/service", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(service),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        getServices();
+        toast.success("Service updated successfully!");
+      } else {
+        toast.info(data.message);
+      }
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong!");
     }
   };
 
+  //delete Service
+
+  const handleDeleteService = async (id: string) => {
+    console.log(id);
+    try {
+      const res = await fetch("/api/service", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        toast.success("Service deleted successfully!");
+        getServices();
+      } else {
+        toast.info(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong!");
+    }
+  };
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Services</h1>
@@ -307,8 +371,13 @@ export default function ServicesPage() {
       {/* Services Grid/List */}
       {viewMode === "grid" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredServices.map((service:any) => (
-            <ServiceCard key={service._id} service={service} />
+          {filteredServices.map((service: any) => (
+            <ServiceCard
+              key={service._id}
+              service={service}
+              handleClickEdit={() => openEditModal(service)}
+              handleClickDelete={() => handleDeleteService(service._id)}
+            />
           ))}
         </div>
       ) : (
@@ -329,12 +398,7 @@ export default function ServicesPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Duration
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Bookings
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Revenue
-                  </th>
+
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
@@ -344,7 +408,7 @@ export default function ServicesPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {filteredServices?.map((service:any) => (
+                {filteredServices?.map((service: any) => (
                   <tr
                     key={service._id}
                     className="hover:bg-gray-50 transition-colors"
@@ -353,7 +417,7 @@ export default function ServicesPage() {
                       <div className="flex items-center">
                         <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white mr-3">
                           <FontAwesomeIcon
-                            icon={service.icon}
+                            icon={categoryIcons[service.category]}
                             className="w-5 h-5"
                           />
                         </div>
@@ -378,12 +442,7 @@ export default function ServicesPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                       {service.duration}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {service.bookings}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {service.revenue}
-                    </td>
+
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`px-3 py-1 text-xs font-medium rounded-full ${
@@ -399,20 +458,16 @@ export default function ServicesPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center space-x-2">
                         <button
-                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                          title="View"
-                        >
-                          <FontAwesomeIcon icon={faEye} className="w-4 h-4" />
-                        </button>
-                        <button
                           className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                           title="Edit"
+                          onClick={() => openEditModal(service)}
                         >
                           <FontAwesomeIcon icon={faEdit} className="w-4 h-4" />
                         </button>
                         <button
                           className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                           title="Delete"
+                          onClick={() => handleDeleteService(service._id)}
                         >
                           <FontAwesomeIcon icon={faTrash} className="w-4 h-4" />
                         </button>
@@ -430,6 +485,8 @@ export default function ServicesPage() {
         show={showModal}
         onClose={() => setShowModal(false)}
         onAddService={handleAddService}
+        onEditService={handleEditService}
+        editData={editData}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlusCircle,
@@ -19,18 +19,20 @@ import {
   faToggleOn,
   faBolt,
   faExclamationCircle,
-  faCheckCircle,
-  faTimesCircle,
+  faEdit,
+  faSave,
 } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-toastify";
 
 interface AddServiceModalProps {
   show: boolean;
   onClose: () => void;
-  onAddService: (service: ServiceForm) => void;
+  onAddService?: (service: ServiceForm) => void;
+  onEditService?: (service: ServiceForm) => void;
+  editData?: ServiceForm | null;
 }
 
 export interface ServiceForm {
+  id?: string;
   name: string;
   description: string;
   price: string;
@@ -51,7 +53,11 @@ export default function AddServiceModal({
   show,
   onClose,
   onAddService,
-}: AddServiceModalProps) {
+  onEditService,
+  editData = null,
+}: any) {
+  const isEditMode = !!editData;
+
   const [service, setService] = useState<ServiceForm>({
     name: "",
     description: "",
@@ -64,6 +70,32 @@ export default function AddServiceModal({
   const [errors, setErrors] = useState<
     Partial<Record<keyof ServiceForm, string>>
   >({});
+
+  // Auto-fill form when editData changes
+  useEffect(() => {
+    if (editData) {
+      setService({
+        id: editData._id,
+        name: editData.name,
+        description: editData.description,
+        price: editData.price,
+        duration: editData.duration,
+        category: editData.category,
+        status: editData.status,
+      });
+    } else {
+      // Reset form when not in edit mode
+      setService({
+        name: "",
+        description: "",
+        price: "",
+        duration: "",
+        category: "residential",
+        status: "active",
+      });
+    }
+    setErrors({});
+  }, [editData, show]); // Re-run when editData or show changes
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -103,19 +135,12 @@ export default function AddServiceModal({
     e.preventDefault();
 
     if (validateForm()) {
-      onAddService(service);
-
-      // Reset form
-      setService({
-        name: "",
-        description: "",
-        price: "",
-        duration: "",
-        category: "residential",
-        status: "active",
-      });
-      setErrors({});
-      onClose();
+      if (isEditMode && onEditService) {
+        onEditService(service);
+      } else if (!isEditMode && onAddService) {
+        onAddService(service);
+      }
+      handleClose();
     }
   };
 
@@ -141,17 +166,19 @@ export default function AddServiceModal({
           <div>
             <h2 className="text-2xl font-semibold text-gray-900">
               <FontAwesomeIcon
-                icon={faPlusCircle}
+                icon={isEditMode ? faEdit : faPlusCircle}
                 className="text-blue-500 mr-2"
               />
-              Add New Service
+              {isEditMode ? "Edit Service" : "Add New Service"}
             </h2>
             <p className="text-sm text-gray-500 mt-1">
               <FontAwesomeIcon
                 icon={faInfoCircle}
                 className="text-gray-400 mr-1"
               />
-              Fill in the details to create a new service
+              {isEditMode
+                ? "Update the service details below"
+                : "Fill in the details to create a new service"}
             </p>
           </div>
           <button
@@ -425,8 +452,11 @@ export default function AddServiceModal({
               type="submit"
               className="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
-              <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
-              Create Service
+              <FontAwesomeIcon
+                icon={isEditMode ? faSave : faPlusCircle}
+                className="mr-2"
+              />
+              {isEditMode ? "Save Changes" : "Create Service"}
             </button>
           </div>
         </form>

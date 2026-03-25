@@ -7,28 +7,25 @@ export async function GET() {
   await dbConnect();
 
   try {
-    // Total Services
     const totalServices = await Service.countDocuments();
 
-    // Active Services
     const activeServices = await Service.countDocuments({ status: "active" });
 
-    // ✅ Only completed bookings count
-    const totalBookings = await Booking.countDocuments({
-      status: "completed",
-    });
+    const totalBookings = await Booking.countDocuments();
 
-    // ✅ Only completed bookings revenue
     const revenueData = await Booking.aggregate([
+      { $match: { status: "Completed" } },
       {
-        $match: {
-          status: "completed", // 👈 MOST IMPORTANT FIX
+        $project: {
+          numericPrice: {
+            $toDouble: { $substr: ["$service.price", 1, -1] },
+          },
         },
       },
       {
         $group: {
           _id: null,
-          total: { $sum: "$price" },
+          total: { $sum: "$numericPrice" },
         },
       },
     ]);

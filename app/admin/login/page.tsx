@@ -13,7 +13,6 @@ const AdminLogin = () => {
 
   const userLogin = async (e: any) => {
     e.preventDefault();
-
     setLoading(true);
 
     try {
@@ -34,6 +33,8 @@ const AdminLogin = () => {
         toast.error(data.message);
         return;
       }
+
+      localStorage.setItem("adminEmail", email);
 
       toast.success("Login Successful");
 
@@ -105,8 +106,6 @@ const AdminLogin = () => {
                   required
                   className="w-full px-4 py-3 text-gray-500 placeholder:text-gray-500 rounded-lg border border-gray-300 font-poppins text-base md:text-lg outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 transition-colors bg-white"
                 />
-
-               
               </div>
 
               {/* Login Button */}

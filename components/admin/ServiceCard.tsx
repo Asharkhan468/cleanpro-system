@@ -1,13 +1,9 @@
-// components/admin/ServiceCard.tsx
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEdit,
   faTrash,
-  faEye,
-  faStar,
   faClock,
   faDollarSign,
-  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { useEffect } from "react";
@@ -36,7 +32,7 @@ import {
   faShieldAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
-const ServiceCard = ({ service }: ServiceCardProps) => {
+const ServiceCard = ({ service, handleClickEdit, handleClickDelete }: any) => {
   const categoryIcons: Record<string, IconDefinition> = {
     residential: faHome,
     commercial: faBuilding,
@@ -45,7 +41,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
     security: faShieldAlt,
   };
 
-  const categoryIcon = categoryIcons[service.category] || faHome; // default icon
+  const categoryIcon = categoryIcons[service.category] || faHome;
   return (
     <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group">
       {/* Header with gradient */}
@@ -110,6 +106,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
         {/* Action Buttons */}
         <div className="flex items-center justify-end space-x-2 pt-4 border-t border-gray-100">
           <button
+            onClick={handleClickEdit}
             className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
             title="Edit"
           >
@@ -118,6 +115,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
           <button
             className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             title="Delete"
+            onClick={handleClickDelete}
           >
             <FontAwesomeIcon icon={faTrash} className="w-4 h-4" />
           </button>
