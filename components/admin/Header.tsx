@@ -1,15 +1,14 @@
-// components/admin/Header.tsx
 "use client";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
   faBell,
-  faEnvelope,
-  faUserCircle,
   faChevronDown,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 interface HeaderProps {
   sidebarOpen: boolean;
@@ -19,6 +18,32 @@ interface HeaderProps {
 const Header = ({ sidebarOpen, setSidebarOpen }: HeaderProps) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+
+  const handleLogout = async () => {
+    const router = useRouter();
+
+    try {
+      const res = await fetch("/api/auth/logout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        toast.success(data.message);
+
+        localStorage.removeItem("admin");
+
+        router.push("/admin/login");
+      } else {
+        toast.error(data.message || "Logout failed");
+      }
+    } catch (err) {
+      toast.error("Server error during logout");
+      console.error(err);
+    }
+  };
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-30">
@@ -134,12 +159,14 @@ const Header = ({ sidebarOpen, setSidebarOpen }: HeaderProps) => {
                       Settings
                     </a>
                     <hr className="my-2 border-gray-100" />
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                    >
-                      Logout
-                    </a>
+                    <button onClick={handleLogout}>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                      >
+                        Logout
+                      </a>
+                    </button>
                   </div>
                 </div>
               )}

@@ -5,8 +5,7 @@ import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 interface StatsCardProps {
   title: string;
-  value: string;
-  change: string;
+  value: any;
   icon: IconDefinition;
   color: 'blue' | 'green' | 'purple' | 'yellow' | 'red';
 }
@@ -54,8 +53,7 @@ const colorVariants = {
   }
 };
 
-const StatsCard = ({ title, value, change, icon, color }: StatsCardProps) => {
-  const isPositive = change.startsWith('+');
+const StatsCard = ({ title, value, icon, color }: StatsCardProps) => {
   const colors = colorVariants[color];
 
   return (
@@ -64,12 +62,7 @@ const StatsCard = ({ title, value, change, icon, color }: StatsCardProps) => {
         <div className={`w-14 h-14 ${colors.iconBg} rounded-xl flex items-center justify-center shadow-lg ${colors.shadow}`}>
           <FontAwesomeIcon icon={icon} className={`w-6 h-6 ${colors.iconColor}`} />
         </div>
-        <span className={`flex items-center text-sm font-medium px-3 py-1 rounded-full ${
-          isPositive ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'
-        }`}>
-          <FontAwesomeIcon icon={isPositive ? faArrowUp : faArrowDown} className="w-3 h-3 mr-1" />
-          {change}
-        </span>
+       
       </div>
       <h3 className="text-2xl font-bold text-gray-900 mb-1">{value}</h3>
       <p className="text-sm text-gray-500">{title}</p>
