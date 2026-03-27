@@ -1,14 +1,15 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
   faBell,
   faChevronDown,
   faBars,
+  faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
+import { usePathname, useRouter } from "next/navigation";
 
 interface HeaderProps {
   sidebarOpen: boolean;
@@ -18,10 +19,24 @@ interface HeaderProps {
 const Header = ({ sidebarOpen, setSidebarOpen }: HeaderProps) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [pageName, setPageName] = useState("Dashboard");
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === "/admin") {
+      setPageName("Dashboard");
+    } else if (pathname === "/admin/services") {
+      setPageName("Services");
+    } else if(pathname ==="/admin/profile"){
+      setPageName("Profile")
+    }
+    else {
+      setPageName("Bookings");
+    }
+  }, [pathname]);
 
   const handleLogout = async () => {
-    const router = useRouter();
-
     try {
       const res = await fetch("/api/auth/logout", {
         method: "POST",
@@ -64,15 +79,9 @@ const Header = ({ sidebarOpen, setSidebarOpen }: HeaderProps) => {
             {/* Search Bar */}
             <div className="hidden md:flex items-center flex-1 max-w-md">
               <div className="relative w-full">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="w-full text-gray-500 placeholder:text-gray-500 pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-                <FontAwesomeIcon
-                  icon={faSearch}
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4"
-                />
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+                  {pageName}
+                </h1>
               </div>
             </div>
           </div>
@@ -152,12 +161,7 @@ const Header = ({ sidebarOpen, setSidebarOpen }: HeaderProps) => {
                     >
                       Profile
                     </a>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                    >
-                      Settings
-                    </a>
+                    
                     <hr className="my-2 border-gray-100" />
                     <button onClick={handleLogout}>
                       <a

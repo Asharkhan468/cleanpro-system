@@ -2,20 +2,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   faChartPie,
   faCalendarCheck,
   faConciergeBell,
-  faUsers,
-  faCog,
-  faSignOutAlt,
   faChevronLeft,
   faChevronRight,
-  faHome,
-  faBell,
-  faCreditCard,
-  faChartLine,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 interface SidebarProps {
@@ -30,6 +24,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
     { path: "/admin", name: "Dashboard", icon: faChartPie },
     { path: "/admin/bookings", name: "Bookings", icon: faCalendarCheck },
     { path: "/admin/services", name: "Services", icon: faConciergeBell },
+    { path: "/admin/profile", name: "Profile", icon: faUser },
   ];
 
   const [email, setEmail] = useState<string | null>(null);
@@ -40,13 +35,11 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
     }
   }, []);
 
-  
-
   return (
     <>
       {/* Desktop Sidebar */}
       <aside
-        className={`fixed left-0 top-0 h-full bg-gradient-to-b from-gray-900 to-gray-800 text-white transition-all duration-300 z-40 hidden lg:block ${
+        className={`fixed left-0 top-0 h-full bg-gradient-to-b from-slate-900 to-slate-800 text-white transition-all duration-300 z-40 hidden lg:block ${
           isOpen ? "w-64" : "w-20"
         }`}
       >
@@ -125,4 +118,3 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 };
 
 export default Sidebar;
-
