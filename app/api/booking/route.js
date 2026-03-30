@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/libs/db";
 import Booking from "@/models/Booking";
+import Notification from "@/models/Notification";
 
 export async function POST(req) {
   try {
@@ -30,6 +31,10 @@ export async function POST(req) {
     }
 
     const booking = await Booking.create({ ...data, bookingId: newId });
+
+    await Notification.create({
+      message: "New booking received",
+    });
 
     return NextResponse.json({
       success: true,
