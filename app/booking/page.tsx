@@ -73,7 +73,12 @@ interface FormData {
 
 export default function BookingPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+
+  function useSafeSearchParams() {
+    if (typeof window === "undefined") return null; // SSR ke waqt null return kare
+    return useSearchParams();
+  }
+  const searchParams = useSafeSearchParams();
   const [formStep, setFormStep] = useState<number>(1);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [packages, setPackagesData] = useState<any>([]);
@@ -145,10 +150,10 @@ export default function BookingPage() {
     agreeToTerms: false,
   });
   useEffect(() => {
+    if (!searchParams) return;
     const id = searchParams.get("_id");
     const name = searchParams.get("name");
     const price = searchParams.get("price");
-
     if (id && name && price) {
       setServiceDetails({
         id,
