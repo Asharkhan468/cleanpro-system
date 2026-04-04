@@ -456,7 +456,7 @@ export default function BookingPage() {
               </div>
               <div className="bg-white/20 px-6 py-3 rounded-xl">
                 <p className="text-sm text-blue-100">Total Price</p>
-                <p className="text-2xl font-bold">{serviceDetails.price}</p>
+                <p className="text-2xl font-bold">{serviceDetails.price}$</p>
               </div>
             </div>
           </div>
