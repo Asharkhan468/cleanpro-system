@@ -135,7 +135,7 @@ export default function ServicesPage() {
       toast.error("Something went wrong!");
     }
   };
-//Edit service
+  //Edit service
   const handleEditService = async (service: any) => {
     try {
       const res = await fetch("/api/service", {
@@ -185,7 +185,6 @@ export default function ServicesPage() {
 
   return (
     <div className="space-y-6">
-      
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white rounded-xl shadow-sm p-4">
@@ -465,6 +464,17 @@ export default function ServicesPage() {
           </div>
         </div>
       )}
+
+      <button
+        onClick={() => {
+          setEditData(null);
+          setShowModal(true);
+        }}
+        className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg transition-all hover:scale-105 active:scale-95 z-50"
+        aria-label="Add Service"
+      >
+        <FontAwesomeIcon icon={faPlus} className="w-6 h-6" />
+      </button>
 
       <AddServiceModal
         show={showModal}
