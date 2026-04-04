@@ -406,21 +406,28 @@ export default function BookingPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Choose from available packages
               </label>
-              <select
-                value={serviceDetails.id || ""}
-                onChange={handlePackageSelect}
-                className="w-full text-gray-500 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                {packages.map((pkg: any) => (
-                  <option
-                    className="text-gray-600"
-                    key={pkg._id}
-                    value={pkg._id}
-                  >
-                    {pkg.name} - {pkg.price} $
-                  </option>
-                ))}
-              </select>
+              <div className="relative w-full">
+                <select
+                  value={serviceDetails.id || ""}
+                  onChange={handlePackageSelect}
+                  className="w-full text-gray-500 px-4 py-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+                >
+                  {packages.map((pkg: any) => (
+                    <option
+                      className="text-gray-600"
+                      key={pkg._id}
+                      value={pkg._id}
+                    >
+                      {pkg.name} - {pkg.price} $
+                    </option>
+                  ))}
+                </select>
+
+                {/* Custom Arrow */}
+                <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500">
+                  ▼
+                </div>
+              </div>
               <p className="text-sm text-gray-500 mt-2">
                 {
                   packages.find((p: any) => p._id === serviceDetails.id)
@@ -662,20 +669,27 @@ export default function BookingPage() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       State *
                     </label>
-                    <select
-                      name="state"
-                      value={formData.state}
-                      onChange={handleInputChange}
-                      className="w-full px-4 text-gray-500 placeholder:text-gray-500 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      required
-                    >
-                      <option value="">Select State</option>
-                      <option value="CA">California</option>
-                      <option value="NY">New York</option>
-                      <option value="TX">Texas</option>
-                      <option value="FL">Florida</option>
-                      <option value="IL">Illinois</option>
-                    </select>
+                    <div className="relative w-full">
+                      <select
+                        name="state"
+                        value={formData.state}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 pr-10 text-gray-500 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+                        required
+                      >
+                        <option value="">Select State</option>
+                        <option value="CA">California</option>
+                        <option value="NY">New York</option>
+                        <option value="TX">Texas</option>
+                        <option value="FL">Florida</option>
+                        <option value="IL">Illinois</option>
+                      </select>
+
+                      {/* Custom Arrow */}
+                      <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500">
+                        ▾
+                      </div>
+                    </div>
                   </div>
 
                   <div>
@@ -732,23 +746,34 @@ export default function BookingPage() {
                     />
                     Preferred Time *
                   </label>
-                  <select
-                    name="serviceTime"
-                    value={formData.serviceTime}
-                    onChange={handleInputChange}
-                    className="w-full text-gray-500 placeholder:text-gray-500 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  >
-                    <option value="">Select Time</option>
-                    <option value="8:00 AM - 11:00 AM">
-                      8:00 AM - 11:00 AM
-                    </option>
-                    <option value="11:00 AM - 2:00 PM">
-                      11:00 AM - 2:00 PM
-                    </option>
-                    <option value="2:00 PM - 5:00 PM">2:00 PM - 5:00 PM</option>
-                    <option value="5:00 PM - 8:00 PM">5:00 PM - 8:00 PM</option>
-                  </select>
+                  <div className="relative w-full">
+                    <select
+                      name="serviceTime"
+                      value={formData.serviceTime}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 pr-10 text-gray-500 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
+                      required
+                    >
+                      <option value="">Select Time</option>
+                      <option value="8:00 AM - 11:00 AM">
+                        8:00 AM - 11:00 AM
+                      </option>
+                      <option value="11:00 AM - 2:00 PM">
+                        11:00 AM - 2:00 PM
+                      </option>
+                      <option value="2:00 PM - 5:00 PM">
+                        2:00 PM - 5:00 PM
+                      </option>
+                      <option value="5:00 PM - 8:00 PM">
+                        5:00 PM - 8:00 PM
+                      </option>
+                    </select>
+
+                    {/* Arrow */}
+                    <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500">
+                      ▾
+                    </div>
+                  </div>
                 </div>
 
                 <div>
