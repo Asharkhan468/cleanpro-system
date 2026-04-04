@@ -261,7 +261,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-4 sm:space-y-6 px-4 sm:px-0">
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <StatsCard
           title="Total Bookings"

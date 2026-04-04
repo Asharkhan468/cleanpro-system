@@ -6,24 +6,6 @@ import {
   faDollarSign,
 } from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { useEffect } from "react";
-
-interface ServiceCardProps {
-  service: {
-    id: string;
-    name: string;
-    description: string;
-    price: string;
-    duration: string;
-    icon: IconDefinition;
-    category: string;
-    popularity: number;
-    bookings: number;
-    revenue: string;
-    status: "active" | "inactive";
-  };
-}
-
 import {
   faHome,
   faBuilding,

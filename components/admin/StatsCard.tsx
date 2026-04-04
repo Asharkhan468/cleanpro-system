@@ -57,18 +57,25 @@ const StatsCard = ({ title, value, icon, color }: StatsCardProps) => {
   const colors = colorVariants[color];
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm p-6 hover:shadow-xl transition-all duration-300 border border-gray-100">
-      <div className="flex items-center justify-between mb-4">
+    // <div className="bg-white rounded-2xl shadow-sm p-6 hover:shadow-xl transition-all duration-300 border border-gray-100">
+      <div className="w-full max-w-sm mx-auto bg-white rounded-2xl shadow-sm p-6 hover:shadow-xl transition-all duration-300 border border-gray-100">
+      {/* <div className="flex items-center justify-between mb-4"> */}
+      <div className="flex items-center justify-center sm:justify-between mb-4">
         <div className={`w-14 h-14 ${colors.iconBg} rounded-xl flex items-center justify-center shadow-lg ${colors.shadow}`}>
           <FontAwesomeIcon icon={icon} className={`w-6 h-6 ${colors.iconColor}`} />
         </div>
        
       </div>
-      <h3 className="text-2xl font-bold text-gray-900 mb-1">{value}</h3>
-      <p className="text-sm text-gray-500">{title}</p>
+      {/* <h3 className="text-2xl font-bold text-gray-900 mb-1"> */}
+      <h3 className="text-2xl font-bold text-gray-900 mb-1 text-center sm:text-left">
+        {value}</h3>
+      {/* <p className="text-sm text-gray-500"> */}
+      <p className="text-sm text-gray-500 text-center sm:text-left">
+        {title}</p>
       
       {/* Mini Sparkline (optional decorative element) */}
-      <div className="mt-4 flex items-center space-x-1">
+      {/* <div className="mt-4 flex items-center space-x-1"> */}
+      <div className="mt-4 flex items-center justify-center sm:justify-start space-x-1">
         {[40, 25, 35, 45, 30, 50, 65].map((height, i) => (
           <div
             key={i}

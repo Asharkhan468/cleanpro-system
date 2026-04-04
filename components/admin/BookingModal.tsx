@@ -3,26 +3,9 @@ import {
   faTimes,
   faUser,
   faCalendar,
-  faClock,
   faMapMarker,
-  faPhone,
-  faEnvelope,
-  faDollarSign,
   faTag,
 } from "@fortawesome/free-solid-svg-icons";
-
-interface BookingModalProps {
-  booking: {
-    id: string;
-    customer: string;
-    service: string;
-    date: string;
-    time: string;
-    status: string;
-    amount: string;
-  };
-  onClose: () => void;
-}
 
 const BookingModal = ({ booking, onClose }: any) => {
   return (
